@@ -98,6 +98,56 @@ public class BlueCube : MonoBehaviour {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // ==============
+// COLLISION / TRIGGER FUNKTIONEN
+// ==============
+//{///////////////////////////////////////////////////////////////////////////////////////
+
+//-------------------------------------------------------
+
+	void OnCollisionEnter (Collision col) {
+			
+		// Wird geprüft ob der Cube oben ist sprich schon einmal aktiviert wurde
+		if (upCube != true) {
+
+			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
+			switch (location)
+			{
+			case 0:
+				StartCoroutine (GroundToTop ());
+				break;
+
+			case 1:
+				StartCoroutine (TopToGround ());
+				break;
+
+			case 2:
+				StartCoroutine (FrontToBack ());
+				break;
+
+			case 3:
+				StartCoroutine (BackToFront ());
+				break;
+
+			case 4:
+				StartCoroutine (LeftToRight ());
+				break;
+
+			case 5:
+				StartCoroutine (RightToLeft ());
+				break;
+			}
+
+			upCube = false;
+
+		}
+	}
+
+//-------------------------------------------------------
+
+//} ENDE COLLISION / TRIGGER FUNKTIONEN
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ==============
 // IENUMERATOR / ANIMATION
 // ==============
 //{///////////////////////////////////////////////////////////////////////////////////////
