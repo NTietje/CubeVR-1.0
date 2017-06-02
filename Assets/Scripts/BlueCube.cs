@@ -137,7 +137,7 @@ public class BlueCube : MonoBehaviour {
 				break;
 			}
 
-			upCube = false;
+			upCube = true;
 
 		}
 	}
