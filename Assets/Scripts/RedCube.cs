@@ -9,21 +9,26 @@ public class RedCube : MonoBehaviour {
 	////////////////////////////
 	// Alle Variablen
 
-	// Öffentliche Floatvariablen für das maximale Ziehen und Drücken des Cubes + die Geschwindigkeit
+	// Öffentliche Floatvariablen für das maximale Ziehen und Drücken des Cubes + die Geschwindigkeit + die Kraft die ausgeübt auf der Kugel
 	public float maxPull = 0;
 	public float maxPush = 0;
 	public float speed = 1f;
+	public float force = 0f;
 
 	// Öffentliche Intvariable für das Defenieren der Position des Cubes (0 = Boden; 1 = Decke; 2 = Vorne; 3 = Hinten; 4 = Links; 5 = Rechts)
 	public int location = 0;
 
+	// Bool zum Prüfen ob der Cube allgemein eine Kollision mit Objekten haben soll
+	public bool haveCollision = false;
+	
 	// Startposition, Endposition und Distanz
 	private Vector3 startPos;
 	private Vector3 endPos;
 	private float distance = 1f;
 
-	// Bool zum Überprüfen ob die Animation läuft
+	// Bool zum Überprüfen ob die Animation läuft und ob die Kollision aktiv oder inaktiv ist
 	private bool isBusy = false;
+	private bool collisionOn = false;
 
 //-------------------------------------------------------
 
@@ -60,6 +65,9 @@ public class RedCube : MonoBehaviour {
 		// Wird geprüft ob der maximale Ziehwert ungleich Null ist
 		if (maxPull != 0 & isBusy != true) {
 		
+			// Die Kollision mit der Kugel ist nun aktiv
+			collisionOn = true;
+			
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
 			switch (location)
 			{
@@ -143,6 +151,55 @@ public class RedCube : MonoBehaviour {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // ==============
+// COLLISION / TRIGGER FUNKTIONEN
+// ==============
+//{///////////////////////////////////////////////////////////////////////////////////////
+
+//-------------------------------------------------------
+
+	////////////////////////////
+	// Die Kollisionsabfrage mit der Kugel
+	void OnCollisionEnter (Collision col) {
+
+		// Wird geprüft ob der Cube überhaupt eine Kollision haben darf und ob diese aktiv ist
+		if (collisionOn != false && haveCollision != false) {
+
+			// Switchabfrage für die Position des Cubes
+			switch (location)
+			{
+			case 0:
+				col.rigidbody.AddForce (Vector3.up * force);
+				break;
+
+			case 1:
+				col.rigidbody.AddForce (-Vector3.up * force);
+				break;
+
+			case 2:
+				col.rigidbody.AddForce (-Vector3.back * force);
+				break;
+
+			case 3:
+				col.rigidbody.AddForce (Vector3.back * force);
+				break;
+
+			case 4:
+				col.rigidbody.AddForce (-Vector3.left * force);
+				break;
+
+			case 5:
+				col.rigidbody.AddForce (Vector3.left * force);
+				break;
+			}
+		}
+	}
+
+//-------------------------------------------------------
+
+//} ENDE COLLISION / TRIGGER FUNKTIONEN
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ==============
 // IENUMERATOR / ANIMATION
 // ==============
 //{///////////////////////////////////////////////////////////////////////////////////////
@@ -169,9 +226,10 @@ public class RedCube : MonoBehaviour {
 
 		}
 
-		// Nachdem der Timer zuende ist, ist der Cube wieder interagierbar
+		// Nachdem der Timer zuende ist, ist der Cube wieder interagierbar und die Kollision ist deaktiviert
 		isBusy = false;
 		yield return new WaitForSeconds (0.1f);
+		collisionOn = false;
 
 	}
 
@@ -196,6 +254,7 @@ public class RedCube : MonoBehaviour {
 
 		isBusy = false;
 		yield return new WaitForSeconds (0.1f);
+		collisionOn = false;
 
 	}
 
@@ -220,6 +279,7 @@ public class RedCube : MonoBehaviour {
 
 		isBusy = false;
 		yield return new WaitForSeconds (0.1f);
+		collisionOn = false;
 
 	}
 
@@ -244,6 +304,7 @@ public class RedCube : MonoBehaviour {
 
 		isBusy = false;
 		yield return new WaitForSeconds (0.1f);
+		collisionOn = false;
 
 	}
 
@@ -268,6 +329,7 @@ public class RedCube : MonoBehaviour {
 
 		isBusy = false;
 		yield return new WaitForSeconds (0.1f);
+		collisionOn = false;
 
 	}
 
@@ -292,6 +354,7 @@ public class RedCube : MonoBehaviour {
 
 		isBusy = false;
 		yield return new WaitForSeconds (0.1f);
+		collisionOn = false;
 
 	}
 

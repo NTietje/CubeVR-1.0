@@ -1243,10 +1243,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4fc34fc39f7eb648beb1c6cbc43cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPull: 2
+  maxPull: 1
   maxPush: 0
   speed: 8
+  force: 50
   location: 5
+  haveCollision: 1
 --- !u!65 &204844694
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7615,7 +7617,9 @@ MonoBehaviour:
   maxPull: 2
   maxPush: 0
   speed: 5
+  force: 0
   location: 5
+  haveCollision: 0
 --- !u!4 &1319096755 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 367d35db8c8523c4e8641748cc4afb7c, type: 3}
@@ -7680,6 +7684,7 @@ MonoBehaviour:
   upCube: 1
   location: 0
   speed: 4
+  jumpForce: 50
 --- !u!1 &1334525667 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 367d35db8c8523c4e8641748cc4afb7c, type: 3}
@@ -9077,7 +9082,9 @@ MonoBehaviour:
   maxPull: 1
   maxPush: 0
   speed: 3
+  force: 0
   location: 0
+  haveCollision: 0
 --- !u!65 &1524052156
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -13,8 +13,9 @@ public class BlueCube : MonoBehaviour {
 	// Öffentliche Intvariable für das Defenieren der Position des Cubes (0 = Boden; 1 = Decke; 2 = Vorne; 3 = Hinten; 4 = Links; 5 = Rechts)
 	public int location = 0;
 
-	// Die Geschwindigkeit des Cubes
+	// Die Geschwindigkeit des Cubes + die die Kraft die ausgeübt auf der Kugel
 	public float speed = 1f;
+	public float jumpForce = 0f;
 
 	// Startposition, Endposition und Distanz
 	private Vector3 startPos;
@@ -104,6 +105,8 @@ public class BlueCube : MonoBehaviour {
 
 //-------------------------------------------------------
 
+	////////////////////////////
+	// Kollisionsabfrage ob die Kugel den aktivierten blauen Cube berührt
 	void OnCollisionEnter (Collision col) {
 			
 		// Wird geprüft ob der Cube oben ist sprich schon einmal aktiviert wurde
@@ -114,26 +117,32 @@ public class BlueCube : MonoBehaviour {
 			{
 			case 0:
 				StartCoroutine (GroundToTop ());
+				col.rigidbody.AddForce (Vector3.up * jumpForce);
 				break;
 
 			case 1:
 				StartCoroutine (TopToGround ());
+				col.rigidbody.AddForce (-Vector3.up * jumpForce);
 				break;
 
 			case 2:
 				StartCoroutine (FrontToBack ());
+				col.rigidbody.AddForce (-Vector3.back * jumpForce);
 				break;
 
 			case 3:
 				StartCoroutine (BackToFront ());
+				col.rigidbody.AddForce (Vector3.back * jumpForce);
 				break;
 
 			case 4:
 				StartCoroutine (LeftToRight ());
+				col.rigidbody.AddForce (-Vector3.forward * jumpForce);
 				break;
 
 			case 5:
 				StartCoroutine (RightToLeft ());
+				col.rigidbody.AddForce (Vector3.forward * jumpForce);
 				break;
 			}
 
