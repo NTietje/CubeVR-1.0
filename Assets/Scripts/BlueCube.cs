@@ -22,6 +22,14 @@ public class BlueCube : MonoBehaviour {
 	private Vector3 endPos;
 	private float distance = 1f;
 
+	//Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
+	private Vector3 groundToTop;
+	private Vector3 topToGround;
+	private Vector3 frontToBack;
+	private Vector3 backToFront;
+	private Vector3 leftToRight;
+	private Vector3 rightToLeft;
+
 	// Bool zum Überprüfen ob die Animation läuft
 	private bool isBusy = false;
 
@@ -32,6 +40,14 @@ public class BlueCube : MonoBehaviour {
 	void Start () {
 
 		startPos = transform.position;
+
+		// initialiserie Vektoren
+		groundToTop = new Vector3(0, distance, 0);
+		topToGround = new Vector3(0, -distance, 0);
+		frontToBack = new Vector3(0, 0, -distance);
+		backToFront = new Vector3(0, 0, distance);
+		leftToRight = new Vector3(distance, 0, 0);
+		rightToLeft = new Vector3(-distance, 0, 0);
 
 	}
 
@@ -63,28 +79,28 @@ public class BlueCube : MonoBehaviour {
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
 			switch (location)
 			{
-			case 0:
-				StartCoroutine (TopToGround ());
+			case 0: // TopToGround
+				StartCoroutine(Animate(topToGround));
 				break;
 
-			case 1:
-				StartCoroutine (GroundToTop ());
+			case 1: // GroundToTop
+				StartCoroutine(Animate(groundToTop));
 				break;
 
-			case 2:
-				StartCoroutine (BackToFront ());
+			case 2: // BackToFront
+				StartCoroutine(Animate(backToFront));
 				break;
 
-			case 3:
-				StartCoroutine (FrontToBack ());
+			case 3: // FrontToBack
+				StartCoroutine(Animate(frontToBack));
 				break;
 
-			case 4:
-				StartCoroutine (RightToLeft ());
+			case 4: // RightToLeft
+				StartCoroutine(Animate(rightToLeft));
 				break;
 
-			case 5:
-				StartCoroutine (LeftToRight ());
+			case 5: // LeftToRight
+				StartCoroutine(Animate(leftToRight));
 				break;
 			}
 
@@ -115,33 +131,33 @@ public class BlueCube : MonoBehaviour {
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
 			switch (location)
 			{
-			case 0:
-				StartCoroutine (GroundToTop ());
+			case 0: // GroundToTop
+				StartCoroutine(Animate(groundToTop));
 				col.rigidbody.AddForce (Vector3.up * jumpForce);
 				break;
 
-			case 1:
-				StartCoroutine (TopToGround ());
+			case 1: // TopToGround
+				StartCoroutine(Animate(topToGround));
 				col.rigidbody.AddForce (-Vector3.up * jumpForce);
 				break;
 
-			case 2:
-				StartCoroutine (FrontToBack ());
+			case 2: // FrontToBack
+				StartCoroutine(Animate(frontToBack));
 				col.rigidbody.AddForce (-Vector3.back * jumpForce);
 				break;
 
-			case 3:
-				StartCoroutine (BackToFront ());
+			case 3: // BackToFront
+				StartCoroutine(Animate(backToFront));
 				col.rigidbody.AddForce (Vector3.back * jumpForce);
 				break;
 
-			case 4:
-				StartCoroutine (LeftToRight ());
+			case 4: // LeftToRight
+				StartCoroutine(Animate(leftToRight));
 				col.rigidbody.AddForce (-Vector3.forward * jumpForce);
 				break;
 
-			case 5:
-				StartCoroutine (RightToLeft ());
+			case 5: // RightToLeft
+				StartCoroutine(Animate(rightToLeft));
 				col.rigidbody.AddForce (Vector3.forward * jumpForce);
 				break;
 			}
@@ -164,148 +180,29 @@ public class BlueCube : MonoBehaviour {
 //-------------------------------------------------------
 
 	////////////////////////////
-	// Die Animation des Cubes von unten nach oben
-	IEnumerator GroundToTop () {
-
+	// Die Animation des Cubes von unten nach oben, der Vektor fromTo gibt an, wo die Animation anfängt/ wo sie aufhört
+	IEnumerator Animate(Vector3 fromTo)
+	{
 		// Timer wird auf Null gesetzt und die Startposition und Endposition des Cubes wird ermittelt
 		float timeSinceStarted = 0f;
 		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, distance, 0);
+		endPos = transform.position + fromTo;
 
 		// Der Timer wird gestartet
-		while (timeSinceStarted <= 1f) {
+		while (timeSinceStarted <= 1f)
+		{
 
 			// Solange der Timer nicht zuende ist, ist der Cube "beschäftigt" und kann erstmal nicht weiter betätigt werden. Die Positionen vom Cube für die Animation werden berechnet und umgesetzt 
 			isBusy = true;
 			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
+			transform.position = Vector3.Lerp(startPos, endPos, timeSinceStarted);
 			yield return null;
 
 		}
 
-		// Nachdem der Timer zuende ist, ist der Cube wieder interagierbar
+		// Nachdem der Timer zuende ist, ist der Cube wieder interagierbar und die Kollision ist deaktiviert
 		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von oben nach unten
-	IEnumerator TopToGround () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, -distance, 0);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von vorne nach hinten
-	IEnumerator FrontToBack () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, 0, -distance);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von hinten nach vorne
-	IEnumerator BackToFront () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, 0, distance);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von links nach rechts
-	IEnumerator LeftToRight () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (distance, 0, 0);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von rechts nach links
-	IEnumerator RightToLeft () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (-distance, 0, 0);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
+		yield return new WaitForSeconds(0.1f);
 
 	}
 
