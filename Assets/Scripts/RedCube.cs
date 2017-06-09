@@ -26,8 +26,16 @@ public class RedCube : MonoBehaviour {
 	private Vector3 endPos;
 	private float distance = 1f;
 
-	// Bool zum Überprüfen ob die Animation läuft und ob die Kollision aktiv oder inaktiv ist
-	private bool isBusy = false;
+    //Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
+    private Vector3 groundToTop;
+    private Vector3 topToGround;
+    private Vector3 frontToBack;
+    private Vector3 backToFront;
+    private Vector3 leftToRight;
+    private Vector3 rightToLeft;
+
+    // Bool zum Überprüfen ob die Animation läuft und ob die Kollision aktiv oder inaktiv ist
+    private bool isBusy = false;
 	private bool collisionOn = false;
 
 //-------------------------------------------------------
@@ -38,13 +46,21 @@ public class RedCube : MonoBehaviour {
 
 		startPos = transform.position;
 
-	}
+        // initialiserie Vektoren
+        groundToTop = new Vector3(0, distance, 0);
+        topToGround = new Vector3(0, -distance, 0);
+        frontToBack = new Vector3(0, 0, -distance);
+        backToFront = new Vector3(0, 0, distance);
+        leftToRight = new Vector3(distance, 0, 0);
+        rightToLeft = new Vector3(-distance, 0, 0);
 
-//-------------------------------------------------------
+    }
 
-	////////////////////////////
-	// Update is called once per frame
-	void Update () {
+    //-------------------------------------------------------
+
+    ////////////////////////////
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -71,32 +87,32 @@ public class RedCube : MonoBehaviour {
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
 			switch (location)
 			{
-			case 0:
-				StartCoroutine (GroundToTop ());
-				break;
-			
-			case 1:
-				StartCoroutine (TopToGround ());
-				break;
+                case 0: // GroundToTop
+                    StartCoroutine(Animate(groundToTop));
+                    break;
 
-			case 2:
-				StartCoroutine (FrontToBack ());
-				break;
+                case 1: // TopToGround
+                    StartCoroutine(Animate(topToGround));
+                    break;
 
-			case 3:
-				StartCoroutine (BackToFront ());
-				break;
+                case 2: // FrontToBack
+                    StartCoroutine(Animate(frontToBack));
+                    break;
 
-			case 4:
-				StartCoroutine (LeftToRight ());
-				break;
+                case 3: // BackToFront
+                    StartCoroutine(Animate(backToFront));
+                    break;
 
-			case 5:
-				StartCoroutine (RightToLeft ());
-				break;
-			}
-				
-			--maxPull;
+                case 4: // LeftToRight
+                    StartCoroutine(Animate(leftToRight));
+                    break;
+
+                case 5: // RightToLeft
+                    StartCoroutine(Animate(rightToLeft));
+                    break;
+            }
+
+            --maxPull;
 			++maxPush;
 
 		}
@@ -114,32 +130,32 @@ public class RedCube : MonoBehaviour {
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
 			switch (location)
 			{
-			case 0:
-				StartCoroutine (TopToGround ());
-				break;
+                case 0: // TopToGround
+                    StartCoroutine(Animate(topToGround));
+                    break;
 
-			case 1:
-				StartCoroutine (GroundToTop ());
-				break;
+                case 1: // GroundToTop
+                    StartCoroutine(Animate(groundToTop));
+                    break;
 
-			case 2:
-				StartCoroutine (BackToFront ());
-				break;
+                case 2: // BackToFront
+                    StartCoroutine(Animate(backToFront));
+                    break;
 
-			case 3:
-				StartCoroutine (FrontToBack ());
-				break;
+                case 3: // FrontToBack
+                    StartCoroutine(Animate(frontToBack));
+                    break;
 
-			case 4:
-				StartCoroutine (RightToLeft ());
-				break;
+                case 4: // RightToLeft
+                    StartCoroutine(Animate(rightToLeft));
+                    break;
 
-			case 5:
-				StartCoroutine (LeftToRight ());
-				break;
-			}
+                case 5: // LeftToRight
+                    StartCoroutine(Animate(leftToRight));
+                    break;
+            }
 
-			++maxPull;
+            ++maxPull;
 			--maxPush;
 
 		}
@@ -194,171 +210,42 @@ public class RedCube : MonoBehaviour {
 		}
 	}
 
-//-------------------------------------------------------
+    //-------------------------------------------------------
 
-//} ENDE COLLISION / TRIGGER FUNKTIONEN
+    //} ENDE COLLISION / TRIGGER FUNKTIONEN
 
-//////////////////////////////////////////////////////////////////////////////////////////
-// ==============
-// IENUMERATOR / ANIMATION
-// ==============
-//{///////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // ==============
+    // IENUMERATOR / ANIMATION
+    // ==============
+    //{///////////////////////////////////////////////////////////////////////////////////////
 
-//-------------------------------------------------------
+    // Die Animation des Cubes von unten nach oben, der Vektor fromTo gibt an, wo die Animation anfängt/ wo sie aufhört
+    IEnumerator Animate(Vector3 fromTo)
+    {
+        // Timer wird auf Null gesetzt und die Startposition und Endposition des Cubes wird ermittelt
+        float timeSinceStarted = 0f;
+        startPos = transform.position;
+        endPos = transform.position + fromTo;
 
-	////////////////////////////
-	// Die Animation des Cubes von unten nach oben
-	IEnumerator GroundToTop () {
+        // Der Timer wird gestartet
+        while (timeSinceStarted <= 1f)
+        {
 
-		// Timer wird auf Null gesetzt und die Startposition und Endposition des Cubes wird ermittelt
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, distance, 0);
+            // Solange der Timer nicht zuende ist, ist der Cube "beschäftigt" und kann erstmal nicht weiter betätigt werden. Die Positionen vom Cube für die Animation werden berechnet und umgesetzt 
+            isBusy = true;
+            timeSinceStarted += Time.deltaTime * speed;
+            transform.position = Vector3.Lerp(startPos, endPos, timeSinceStarted);
+            yield return null;
 
-		// Der Timer wird gestartet
-		while (timeSinceStarted <= 1f) {
+        }
 
-			// Solange der Timer nicht zuende ist, ist der Cube "beschäftigt" und kann erstmal nicht weiter betätigt werden. Die Positionen vom Cube für die Animation werden berechnet und umgesetzt 
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
+        // Nachdem der Timer zuende ist, ist der Cube wieder interagierbar und die Kollision ist deaktiviert
+        isBusy = false;
+        yield return new WaitForSeconds(0.1f);
+        collisionOn = false;
 
-		}
+    }
 
-		// Nachdem der Timer zuende ist, ist der Cube wieder interagierbar und die Kollision ist deaktiviert
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-		collisionOn = false;
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von oben nach unten
-	IEnumerator TopToGround () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, -distance, 0);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-		collisionOn = false;
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von vorne nach hinten
-	IEnumerator FrontToBack () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, 0, -distance);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-		collisionOn = false;
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von hinten nach vorne
-	IEnumerator BackToFront () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (0, 0, distance);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-		collisionOn = false;
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von links nach rechts
-	IEnumerator LeftToRight () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (distance, 0, 0);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-		collisionOn = false;
-
-	}
-
-//-------------------------------------------------------
-
-	////////////////////////////
-	// Die Animation des Cubes von rechts nach links
-	IEnumerator RightToLeft () {
-
-		float timeSinceStarted = 0f;
-		startPos = transform.position;
-		endPos = transform.position + new Vector3 (-distance, 0, 0);
-
-		while (timeSinceStarted <= 1f) {
-
-			isBusy = true;
-			timeSinceStarted += Time.deltaTime * speed;
-			transform.position = Vector3.Lerp (startPos, endPos, timeSinceStarted);
-			yield return null;
-
-		}
-
-		isBusy = false;
-		yield return new WaitForSeconds (0.1f);
-		collisionOn = false;
-
-	}
-
-//-------------------------------------------------------
-
-//} ENDE IENUMERATOR / ANIMATION
+    //} ENDE IENUMERATOR / ANIMATION
 }
