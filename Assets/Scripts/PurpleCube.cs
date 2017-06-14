@@ -158,6 +158,9 @@ public class PurpleCube : MonoBehaviour {
 
 		}
 
+		// Die minimale Differenz wird noch hinzugefügt damit es genau 90 Grad gedreht wurde
+		transform.RotateAround (center.transform.position, fromTo, rotation-timeSinceStarted);
+
 		// Nachdem der Timer zuende ist, ist der Cube wieder interagierbar
 		isBusy = false;
 		yield return new WaitForSeconds(0.1f);
