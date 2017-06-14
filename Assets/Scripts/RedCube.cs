@@ -4,8 +4,7 @@ using UnityEngine;
 
 //-------------------------------------------------------
 
-public class RedCube : MonoBehaviour
-{
+public class RedCube : MonoBehaviour {
 
     ////////////////////////////
     // Alle Variablen
