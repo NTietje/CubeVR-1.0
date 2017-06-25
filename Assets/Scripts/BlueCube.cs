@@ -12,9 +12,6 @@ public class BlueCube : MonoBehaviour {
 	// Öffentlicher Boolean zum Überprüfen ob der Cube oben ist
 	public bool upCube = false;
 
-	// Öffentliche Intvariable für das Defenieren der Position des Cubes (0 = Boden; 1 = Decke; 2 = Vorne; 3 = Hinten; 4 = Links; 5 = Rechts)
-	public int location = 0;
-
 	// Die Geschwindigkeit des Cubes + die die Kraft die ausgeübt auf der Kugel
 	public float speed = 1f;
 	public float jumpForce = 0f;
@@ -24,7 +21,7 @@ public class BlueCube : MonoBehaviour {
 	private Vector3 endPos;
 	private float distance = 1f;
 
-	//Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
+	// Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
 	private Vector3 groundToTop;
 	private Vector3 topToGround;
 	private Vector3 frontToBack;
@@ -35,11 +32,16 @@ public class BlueCube : MonoBehaviour {
 	// Bool zum Überprüfen ob die Animation läuft
 	private bool isBusy = false;
 
+	// Zugriff auf die anderen Scripte
+	CubeLocation _cubeLocation; 
+
 //-------------------------------------------------------
 
 	////////////////////////////
 	// Use this for initialization
 	void Start () {
+
+		_cubeLocation = GetComponent<CubeLocation>();
 
 		startPos = transform.position;
 
@@ -79,7 +81,7 @@ public class BlueCube : MonoBehaviour {
 		if (upCube != false & isBusy != true) {
 
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
-			switch (location)
+			switch (_cubeLocation.location)
 			{
 			case 0: // TopToGround
 				StartCoroutine(Animate(topToGround));
@@ -131,7 +133,7 @@ public class BlueCube : MonoBehaviour {
 		if (upCube != true) {
 
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
-			switch (location)
+			switch (_cubeLocation.location)
 			{
 			case 0: // GroundToTop
 				StartCoroutine(Animate(groundToTop));

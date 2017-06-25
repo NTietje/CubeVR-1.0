@@ -15,9 +15,6 @@ public class RedCube : MonoBehaviour {
     public float speed = 1f;
     public float force = 0f;
 
-    // Öffentliche Intvariable für das Defenieren der Position des Cubes (0 = Boden; 1 = Decke; 2 = Vorne; 3 = Hinten; 4 = Links; 5 = Rechts)
-    public int location = 0;
-
     // Bool zum Prüfen ob der Cube allgemein eine Kollision mit Objekten haben soll
     public bool haveCollision = false;
 
@@ -26,7 +23,7 @@ public class RedCube : MonoBehaviour {
     private Vector3 endPos;
     private float distance = 1f;
 
-    //Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
+    // Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
     private Vector3 groundToTop;
     private Vector3 topToGround;
     private Vector3 frontToBack;
@@ -39,12 +36,17 @@ public class RedCube : MonoBehaviour {
     private bool isBusy = false;
     private bool collisionOn = false;
 
+	// Zugriff auf die anderen Scripte
+	CubeLocation _cubeLocation;
+
 //-------------------------------------------------------
 
     ////////////////////////////
     // Use this for initialization
     void Start()
     {
+
+		_cubeLocation = GetComponent<CubeLocation>();
 
         startPos = transform.position;
 
@@ -90,7 +92,7 @@ public class RedCube : MonoBehaviour {
             collisionOn = true;
 
             // Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
-            switch (location)
+			switch (_cubeLocation.location)
             {
                 case 0: // GroundToTop
                     StartCoroutine(Animate(groundToTop));
@@ -135,7 +137,7 @@ public class RedCube : MonoBehaviour {
         {
 
             // Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
-            switch (location)
+			switch (_cubeLocation.location)
             {
                 case 0: // TopToGround
                     StartCoroutine(Animate(topToGround));
@@ -190,7 +192,7 @@ public class RedCube : MonoBehaviour {
         {
 
             // Switchabfrage für die Position des Cubes
-            switch (location)
+			switch (_cubeLocation.location)
             {
                 case 0:
                     col.rigidbody.AddForce(Vector3.up * force);

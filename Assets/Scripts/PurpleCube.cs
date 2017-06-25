@@ -12,8 +12,8 @@ public class PurpleCube : MonoBehaviour {
 	// Öffentliche Floatvariablen für die Rotationsdauer
 	public float duration = 3;
 
-	// Öffentliche Intvariable für das Defenieren der Rotationsrichtung des Cubes (0 = Boden; 1 = Decke; 2 = Vorne; 3 = Hinten)
-	public int location = 0;
+	// Öffentliche Intvariable für das Defenieren der Rotationsachse des Cubes (0 = Z-Achse 1 = X-Achse)
+	public int rotationAxis = 0;
 
 	// Öffentliches GameObject das den Mittelpunkt bestimmt worum gedreht wird
 	public GameObject center;
@@ -21,14 +21,20 @@ public class PurpleCube : MonoBehaviour {
 	// Rotation
 	private float rotation = 90;
 
-	//Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
-	private Vector3 frontToBack;
-	private Vector3 backToFront;
+	// Vektoren für From To deklarieren (initialiseren hier oben noch nicht möglich)
+	private Vector3 frontRotation;
+	private Vector3 backRotation;
 	private Vector3 leftRotation;
 	private Vector3 rightRotation;
 
 	// Bool zum Überprüfen ob die Animation läuft
 	private bool isBusy = false;
+
+	// Liste mit allen Cubes die Mitrotieren
+	public List <GameObject> interactCubes;
+
+	// Zugriff auf die anderen Scripte
+	CubeLocation _cubeLocation;
 
 //-------------------------------------------------------
 
@@ -36,8 +42,21 @@ public class PurpleCube : MonoBehaviour {
 	// Use this for initialization
 	void Start()
 	{
-		frontToBack = new Vector3(1, 0, 0);
-		backToFront = new Vector3(-1, 0, 0);
+		// Alle Children vom lila Cube werden aussortiert, damit nur die die interagierbar sind in der Liste bleiben
+		foreach (Transform child in transform)
+		{
+
+			if (child.gameObject.tag == "PurpleConnected")
+			{
+
+				interactCubes.Add (child.gameObject);
+
+			}
+
+		}
+
+		frontRotation = new Vector3(1, 0, 0);
+		backRotation = new Vector3(-1, 0, 0);
 		leftRotation = new Vector3(0, 0, 1);
 		rightRotation = new Vector3(0, 0, -1);
 
@@ -72,22 +91,15 @@ public class PurpleCube : MonoBehaviour {
 		{
 
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
-			switch (location)
+			switch (rotationAxis)
 			{
-			case 0: // FrontToBack
-				StartCoroutine(Animate(frontToBack));
+			case 0: // FrontRotation
+				StartCoroutine (Animate (frontRotation));
 				break;
 
-			case 1: // BackToFront
-				StartCoroutine(Animate(backToFront));
-				break;
-
-			case 2: // LeftToRight
+			case 1: // LeftRotation
 				StartCoroutine(Animate(leftRotation));
-				break;
-
-			case 3: // RightToLeft
-				StartCoroutine(Animate(rightRotation));
+				rotationChangerLeft();
 				break;
 			}
 		}
@@ -105,22 +117,15 @@ public class PurpleCube : MonoBehaviour {
 		{
 
 			// Switchabfrage für die Position des Cubes + die korrekte Berechnung der neuen Position
-			switch (location)
+			switch (rotationAxis)
 			{
-			case 0: // BackToFront
-				StartCoroutine(Animate(backToFront));
+			case 0: // BackRotation
+				StartCoroutine(Animate(backRotation));
 				break;
 
-			case 1: // FrontToBack
-				StartCoroutine(Animate(frontToBack));
-				break;
-
-			case 2: // RightToLeft
+			case 1: // RightRotation
 				StartCoroutine(Animate(rightRotation));
-				break;
-
-			case 3: // LeftToRight
-				StartCoroutine(Animate(leftRotation));
+				rotationChangerRight();
 				break;
 			}
 		}
@@ -170,5 +175,86 @@ public class PurpleCube : MonoBehaviour {
 //-------------------------------------------------------
 
 //} ENDE IENUMERATOR / ANIMATION
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ==============
+// LOCATIONSÄNDERUNGSFUNKTIONEN
+// ==============
+//{///////////////////////////////////////////////////////////////////////////////////////
+
+//-------------------------------------------------------
+
+	////////////////////////////
+	// Locationänderung wenn nach Links gedreht wird
+	public void rotationChangerLeft()
+	{
+
+		// Alle Objekte in der Liste werden durchgegangen
+		foreach (GameObject loc in interactCubes)
+		{
+
+			// Zugriff auf das Script
+			_cubeLocation = loc.GetComponentInChildren<CubeLocation> ();
+
+			// Switchabfrage um neue Location zu ermitteln
+			switch (_cubeLocation.location)
+			{
+			case 0:
+				_cubeLocation.location = 5;
+				break;
+
+			case 1:
+				_cubeLocation.location = 4;
+				break;
+
+			case 4:
+				_cubeLocation.location = 0;
+				break;
+
+			case 5:
+				_cubeLocation.location = 1;
+				break;
+			}
+		}
+	}
+
+//-------------------------------------------------------
+
+	////////////////////////////
+	// Locationänderung wenn nach Links gedreht wird
+	public void rotationChangerRight()
+	{
+
+		foreach (GameObject loc in interactCubes)
+		{
+
+			_cubeLocation = loc.GetComponentInChildren<CubeLocation> ();
+
+			switch (_cubeLocation.location)
+			{
+			case 0:
+				_cubeLocation.location = 4;
+				break;
+
+			case 1:
+				_cubeLocation.location = 5;
+				break;
+
+			case 4:
+				_cubeLocation.location = 1;
+				break;
+
+			case 5:
+				_cubeLocation.location = 0;
+				break;
+			}
+		}
+	}
+
+//-------------------------------------------------------
+
+	// Weitere 2 Funktionen kommen noch ...
+
+//} ENDE LOCATIONSÄNDERUNGSFUNKTIONEN
 
 }
