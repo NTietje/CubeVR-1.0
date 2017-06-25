@@ -977,7 +977,6 @@ MonoBehaviour:
   maxPush: 0
   speed: 8
   force: 50
-  location: 5
   haveCollision: 1
 --- !u!65 &204844694
 BoxCollider:
@@ -991,6 +990,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.0000005, y: 2, z: 3.989085}
   m_Center: {x: 0, y: 0, z: 0.99454224}
+--- !u!114 &204844695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 204844691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f3ec14a77ea764e84aea5db096cf44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: 5
 --- !u!54 &204844698
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7078,8 +7089,19 @@ MonoBehaviour:
   maxPush: 0
   speed: 5
   force: 0
-  location: 5
   haveCollision: 0
+--- !u!114 &1319096753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1319096750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f3ec14a77ea764e84aea5db096cf44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: 5
 --- !u!4 &1319096755 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 367d35db8c8523c4e8641748cc4afb7c, type: 3}
@@ -7142,9 +7164,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upCube: 1
-  location: 0
   speed: 4
   jumpForce: 50
+--- !u!114 &1331667881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1331667877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f3ec14a77ea764e84aea5db096cf44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: 0
 --- !u!1 &1334525667 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 367d35db8c8523c4e8641748cc4afb7c, type: 3}
