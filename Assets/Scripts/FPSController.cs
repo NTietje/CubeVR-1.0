@@ -86,6 +86,9 @@ public class FPSController : MonoBehaviour {
 
 					// Wird geprüft ob der Cube die Farbe lila hat
 					else if (hit.collider.GetComponent<PurpleCube> () != null) {
+
+							PurpleCube pc = hit.collider.GetComponent<PurpleCube> ();
+							pc.LeftTrigger ();
 				
 					}
 
@@ -131,6 +134,9 @@ public class FPSController : MonoBehaviour {
 
 					// Wird geprüft ob der Cube die Farbe lila hat
 					else if (hit.collider.GetComponent<PurpleCube> () != null) {
+
+							PurpleCube pc = hit.collider.GetComponent<PurpleCube> ();
+							pc.RightTrigger ();
 
 					}
 

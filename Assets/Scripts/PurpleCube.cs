@@ -95,6 +95,7 @@ public class PurpleCube : MonoBehaviour {
 			{
 			case 0: // FrontRotation
 				StartCoroutine (Animate (frontRotation));
+				rotationChangerFront();
 				break;
 
 			case 1: // LeftRotation
@@ -120,7 +121,8 @@ public class PurpleCube : MonoBehaviour {
 			switch (rotationAxis)
 			{
 			case 0: // BackRotation
-				StartCoroutine(Animate(backRotation));
+				StartCoroutine(Animate (backRotation));
+				rotationChangerBack();
 				break;
 
 			case 1: // RightRotation
@@ -221,7 +223,7 @@ public class PurpleCube : MonoBehaviour {
 //-------------------------------------------------------
 
 	////////////////////////////
-	// Locationänderung wenn nach Links gedreht wird
+	// Locationänderung wenn nach Rechts gedreht wird
 	public void rotationChangerRight()
 	{
 
@@ -253,7 +255,71 @@ public class PurpleCube : MonoBehaviour {
 
 //-------------------------------------------------------
 
-	// Weitere 2 Funktionen kommen noch ...
+	////////////////////////////
+	// Locationänderung wenn nach Vorne gedreht wird
+	public void rotationChangerFront()
+	{
+
+		foreach (GameObject loc in interactCubes)
+		{
+
+			_cubeLocation = loc.GetComponentInChildren<CubeLocation> ();
+
+			switch (_cubeLocation.location)
+			{
+			case 0:
+				_cubeLocation.location = 3;
+				break;
+
+			case 1:
+				_cubeLocation.location = 2;
+				break;
+
+			case 2:
+				_cubeLocation.location = 0;
+				break;
+
+			case 3:
+				_cubeLocation.location = 1;
+				break;
+			}
+		}
+	}
+
+//-------------------------------------------------------
+
+	////////////////////////////
+	// Locationänderung wenn nach Hinten gedreht wird
+	public void rotationChangerBack()
+	{
+
+		foreach (GameObject loc in interactCubes)
+		{
+
+			_cubeLocation = loc.GetComponentInChildren<CubeLocation> ();
+
+			switch (_cubeLocation.location)
+			{
+			case 0:
+				_cubeLocation.location = 2;
+				break;
+
+			case 1:
+				_cubeLocation.location = 3;
+				break;
+
+			case 2:
+				_cubeLocation.location = 1;
+				break;
+
+			case 3:
+				_cubeLocation.location = 0;
+				break;
+			}
+		}
+	}
+
+//-------------------------------------------------------
 
 //} ENDE LOCATIONSÄNDERUNGSFUNKTIONEN
 
