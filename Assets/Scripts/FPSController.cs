@@ -84,29 +84,29 @@ public class FPSController : MonoBehaviour {
 
 				}
 
-					// Wird geprüft ob der Cube die Farbe lila hat
-					else if (hit.collider.GetComponent<PurpleCube> () != null) {
+				// Wird geprüft ob der Cube die Farbe lila hat
+				else if (hit.collider.GetComponent<PurpleCube> () != null) {
 
-							PurpleCube pc = hit.collider.GetComponent<PurpleCube> ();
-							pc.LeftTrigger ();
+						PurpleCube pc = hit.collider.GetComponent<PurpleCube> ();
+						pc.LeftTrigger ();
 				
-					}
+				}
 
-						// Wird geprüft ob der Cube die Farbe blau hat
-						else if (hit.collider.GetComponent<BlueCube> () != null) {
+				// Wird geprüft ob der Cube die Farbe blau hat
+				else if (hit.collider.GetComponent<BlueCube> () != null) {
 								
-								BlueCube bc = hit.collider.GetComponent<BlueCube> ();
-								bc.BlueCubeTrigger ();
+						BlueCube bc = hit.collider.GetComponent<BlueCube> ();
+						bc.BlueCubeTrigger ();
 				
-						}
+				}
 					
-							// Wir geprüft ob der Cube ein Spawnknopf ist
-							else if (hit.collider.GetComponent<SpawnButton> () != null) {
+				// Wir geprüft ob der Cube ein Spawnknopf ist
+				else if (hit.collider.GetComponent<SpawnButton> () != null) {
 									
-									SpawnButton sb = hit.collider.GetComponent<SpawnButton> ();
-									sb.SpawnButtonPress ();
+						SpawnButton sb = hit.collider.GetComponent<SpawnButton> ();
+						sb.SpawnButtonPress ();
 
-							}
+				}
 			}
 		}
 
@@ -132,29 +132,29 @@ public class FPSController : MonoBehaviour {
 
 				}
 
-					// Wird geprüft ob der Cube die Farbe lila hat
-					else if (hit.collider.GetComponent<PurpleCube> () != null) {
+				// Wird geprüft ob der Cube die Farbe lila hat
+				else if (hit.collider.GetComponent<PurpleCube> () != null) {
 
-							PurpleCube pc = hit.collider.GetComponent<PurpleCube> ();
-							pc.RightTrigger ();
+						PurpleCube pc = hit.collider.GetComponent<PurpleCube> ();
+						pc.RightTrigger ();
 
-					}
+				}
 
-						// Wird geprüft ob der Cube die Farbe blau hat
-						else if (hit.collider.GetComponent<BlueCube> () != null) {
+				// Wird geprüft ob der Cube die Farbe blau hat
+				else if (hit.collider.GetComponent<BlueCube> () != null) {
 
-								BlueCube bc = hit.collider.GetComponent<BlueCube> ();
-								bc.BlueCubeTrigger ();
+						BlueCube bc = hit.collider.GetComponent<BlueCube> ();
+						bc.BlueCubeTrigger ();
 
-						}
+				}
 
-							// Wir geprüft ob der Cube ein Spawnknopf ist
-							else if (hit.collider.GetComponent<SpawnButton> () != null) {
+			    // Wir geprüft ob der Cube ein Spawnknopf ist
+			    else if (hit.collider.GetComponent<SpawnButton> () != null) {
 
-									SpawnButton sb = hit.collider.GetComponent<SpawnButton> ();
-									sb.SpawnButtonPress ();
+					    SpawnButton sb = hit.collider.GetComponent<SpawnButton> ();
+					    sb.SpawnButtonPress ();
 
-							}
+			    }
 			}
 		}
 	}
